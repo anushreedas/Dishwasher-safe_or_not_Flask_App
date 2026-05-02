@@ -4,49 +4,73 @@ Dishwasher-safe or Not
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container">
 
     <header class="text-white text-center">
-        <h1 class="display-4">Dishwasher-safe or Not</h1>
-        <p class="lead mb-5">A webapp to classify whether a kitchenware is Dishwasher-safe or Not.</p>
+        <h1>Dishwasher-safe or Not</h1>
+        <p class="lead">Classify whether kitchenware is dishwasher-safe.</p>
     </header>
 
-
-    <div class="row py-4">
+    <div class="row">
         <div class="col-lg-6 mx-auto">
 
-            <!-- Upload image input-->
             <form action="{{ url_for('predict_image_file') }}" enctype="multipart/form-data" method="POST">
-                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+
+                <!-- File input -->
+                <div class="input-group mb-2 px-2 py-2 rounded-pill bg-white shadow-sm">
                     <input class="form-control border-0" id="upload" name="file" type="file">
                     <label class="font-weight-light text-muted" for="upload" id="upload-label">Choose file</label>
                     <div class="input-group-append">
-                        <label class="btn btn-light m-0 rounded-pill px-4" for="upload"> <i
-                                class="fa fa-cloud-upload mr-2 text-muted"></i><small
-                                class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                        <label class="btn btn-light m-0 rounded-pill px-4" for="upload">
+                            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+                            <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
+                        </label>
                     </div>
                 </div>
 
+                <!-- Helper text -->
+                <p class="font-italic text-white text-center helper-text">
+                    The uploaded image will appear in the box below.
+                </p>
 
-                <!-- Uploaded image area-->
-                <p class="font-italic text-white text-center">The image uploaded will be rendered inside the box
-                    below.</p>
-                <div class="image-area mt-4"><img alt="" class="img-fluid rounded shadow-sm mx-auto d-block"
-                                                  id="imageResult" name="imageResult"
-                                                  src="#"></div>
-
-                <!-- Submit button-->
-                <div class="container">
-                    <div class="row">
-                        <div class="col text-center">
-                            <input class="btn btn-primary my-3" type="submit"/>
-                        </div>
-                    </div>
+                <!-- Image area: JS live preview before submit,
+                     server-saved image after prediction -->
+                <div class="image-area">
+                    {% if img_filename %}
+                        <img alt="Uploaded image"
+                             class="img-fluid rounded shadow-sm mx-auto d-block"
+                             id="imageResult"
+                             src="{{ url_for('static', filename=img_filename) }}">
+                    {% else %}
+                        <img alt=""
+                             class="img-fluid rounded shadow-sm mx-auto d-block"
+                             id="imageResult"
+                             src="#">
+                    {% endif %}
                 </div>
+
+                <!-- Submit -->
+                <div class="text-center">
+                    <input class="btn btn-primary my-3" type="submit" value="Classify"/>
+                </div>
+
             </form>
+
+            <!-- Result panel — only rendered after a prediction -->
+            {% if predictions or err %}
+            <div class="result-panel text-center mt-2 p-3 rounded shadow-sm">
+                <p class="result-label mb-1">Prediction</p>
+                {% if predictions %}
+                    <p class="result-value {% if predictions == 'dishwasher-safe' %}result-safe{% else %}result-unsafe{% endif %}">
+                        {{ predictions }}
+                    </p>
+                {% else %}
+                    <p class="result-value result-error">{{ err }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
 
         </div>
     </div>
 </div>
-
 {% endblock %}
