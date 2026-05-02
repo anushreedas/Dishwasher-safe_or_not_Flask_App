@@ -1,3 +1,40 @@
+/* ── Layout: full viewport height, no scroll ─────────────────────────── */
+html, body {
+    height: 100%;
+    overflow: hidden;          /* hard lock — nothing scrolls */
+}
+
+body {
+    min-height: 100vh;
+    background-color: #757f9a;
+    background-image: linear-gradient(147deg, #9b5de5 0%, #f15bb5 100%);
+    display: flex;
+    align-items: center;       /* vertically centers the container */
+}
+
+/* ── Container: let it breathe but stay tight ────────────────────────── */
+.container {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+/* ── Header: smaller type, tighter margin ────────────────────────────── */
+header h1 {
+    font-size: 1.75rem;        /* was display-4 = ~3.5rem, halved */
+    margin-bottom: 0.25rem;
+}
+
+header p.lead {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;   /* was mb-5 = 3rem */
+}
+
+/* ── File input row: reduce pill padding ─────────────────────────────── */
+.input-group.rounded-pill {
+    padding: 0.35rem 0.75rem !important;  /* was px-2 py-2 */
+}
+
+/* ── Upload label ────────────────────────────────────────────────────── */
 #upload {
     opacity: 0;
 }
@@ -9,10 +46,23 @@
     transform: translateY(-50%);
 }
 
+/* ── Italic helper text: tighten margin ──────────────────────────────── */
+.helper-text {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+    margin-top: 0.25rem;
+}
+
+/* ── Image preview box: compact, fixed height ────────────────────────── */
 .image-area {
     border: 2px dashed rgba(255, 255, 255, 0.7);
-    padding: 4rem;
+    padding: 0.6rem;           /* was 2rem */
     position: relative;
+    height: 160px;             /* fixed height — no expanding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .image-area::before {
@@ -24,19 +74,47 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     z-index: 1;
+    white-space: nowrap;
 }
-
 
 .image-area img {
     z-index: 2;
     position: relative;
+    max-height: 148px;         /* stays within the fixed box */
+    object-fit: contain;
 }
 
-
-body {
-    min-height: 100vh;
-    background-color: #757f9a;
-    background-image: linear-gradient(147deg, #9b5de5 0%, #f15bb5 100%);
+/* ── Submit button: less top margin ──────────────────────────────────── */
+input[type="submit"].btn {
+    margin-top: 0.6rem !important;
+    margin-bottom: 0.25rem !important;
 }
+
+/* ── Result panel ────────────────────────────────────────────────────── */
+.result-panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.result-label {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.result-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.result-safe   { color: #fff; }
+.result-unsafe { color: #fff; }
+.result-error  { color: #fff; font-size: 0.9rem; font-weight: 400; }
