@@ -8,6 +8,6 @@ To start the server run the following command:
 
 ![alt text](readme_images/Not_safe.png)
 
-![alt text](readme_images/safe.png)
+![alt text](readme_images/Safe.png)
 
 Reference: [https://geekpython.in/flask-app-for-image-recognition](https://geekpython.in/flask-app-for-image-recognition)
